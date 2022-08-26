@@ -24,5 +24,18 @@ where cp.schoolid = 'vandy';
 --from collegeplaying
 --where schoolid = 'vandy'
 
+select p.namefirst, p.namelast, sumsalary.ss
+from 
+    (Select sum(salary) as ss
+    from salaries 
+    group by playerid) as sumsalary
+join people as p
+on p.playerid = sumsalary.playerid
+join collegeplaying as cp
+on s.playerid = cp.playerid
+where cp.schoolid = 'vandy' 
+
+
+
 
 
