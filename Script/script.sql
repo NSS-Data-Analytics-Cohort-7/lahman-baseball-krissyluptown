@@ -19,21 +19,59 @@ from collegeplaying as cp
 inner join people as p
 on cp.playerid = p.playerid
 where cp.schoolid = 'vandy';
-
+k
 --select *
 --from collegeplaying
 --where schoolid = 'vandy'
+select Distinct p.namefirst, p.namelast, cp.schoolid id, sum(s.salary)
+from people as p
+    join collegeplaying as cp
+    on cp.playerid = p.playerid
+    join salaries as s
+    on cp.playerid = p.playerid
+where cp.schoolid = 'vandy'
+group by s.playerid
 
-select p.namefirst, p.namelast, sumsalary.ss
-from 
-    (Select sum(salary) as ss
+
+
+
+
+select Distinct p.namefirst, p.namelast, cp.schoolid id, sum(s.salary)
+from people as p
+    join collegeplaying as cp
+    on cp.playerid = p.playerid
+    join salaries as s
+    on cp.playerid = p.playerid
+where cp.schoolid = 'vandy'
+group by s.playerid
+
+
+
+select * 
+from salaries
+
+
+select p.namefirst, p.namelast, cp.schoolid,
+    (Select sum(salary) as s
     from salaries 
-    group by playerid) as sumsalary
-join people as p
-on p.playerid = sumsalary.playerid
+    where playerid = playerid) as sumsalary
+from people as p
 join collegeplaying as cp
-on s.playerid = cp.playerid
-where cp.schoolid = 'vandy' 
+on cp.playerid = p.playerid
+where cp.schoolid = 'vandy'
+     
+--join people as p
+--on p.playerid = sumsalary.playerid
+--join collegeplaying as cp
+--on s.playerid = cp.playerid
+--where cp.schoolid = 'vandy' 
+
+SELECT customer.customer_num,
+	(SELECT SUM(ship_charge) 
+	 	FROM orders
+	 	WHERE customer.customer_num = orders.customer_num) 
+			AS total_ship_chg
+	FROM customer 
 
 
 
