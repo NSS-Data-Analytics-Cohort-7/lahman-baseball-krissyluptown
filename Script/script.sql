@@ -86,7 +86,8 @@ Order by total_salary DESC;
 Select * 
 from fielding
 
-Select pos, po,
+with position_po as
+(Select pos, po,
 Case when pos = 'OF' then 'Outfield'
      when pos = 'SS' then 'Infield'
      when pos = '1B' then 'Infield'
@@ -95,8 +96,25 @@ Case when pos = 'OF' then 'Outfield'
      when pos = 'P' then 'Battery'
      when pos = 'C' then 'Battery'
      Else null end as Position
-from fielding
+from fielding)
+Select sum(position_po.po), position
+from fielding as f
+Join position_po
+on position_po.pos = position_po.pos
+Group by position_po.po
 
+Select pos, sum(po) as pos_putouts,
+Case when pos = 'OF' then 'Outfield'
+     when pos = 'SS' then 'Infield'
+     when pos = '1B' then 'Infield'
+     when pos = '2B' then 'Infield'
+     when pos = '3B' then 'Infield'
+     when pos = 'P' then 'Battery'
+     when pos = 'C' then 'Battery'
+     Else null end as Position
+from fielding as f
+group by f.pos
 
+--Find the average number of strikeouts per game by decade since 1920. Round the numbers you report to 2 decimal places. Do the same for home runs per game. Do you see any trends?
 
 
