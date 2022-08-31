@@ -66,7 +66,7 @@ where cp.schoolid = 'vandy'
 --on s.playerid = cp.playerid
 --where cp.schoolid = 'vandy' 
 
-
+--winner
 With total_salaries as
     (select distinct playerid, sum(salary) as total_salary
     from salaries
@@ -86,6 +86,7 @@ Order by total_salary DESC;
 Select * 
 from fielding
 
+--was trying to be too complicated
 with position_po as
 (Select pos, po,
 Case when pos = 'OF' then 'Outfield'
@@ -103,6 +104,7 @@ Join position_po
 on position_po.pos = position_po.pos
 Group by position_po.po
 
+--winner
 Select pos, sum(po) as pos_putouts,
 Case when pos = 'OF' then 'Outfield'
      when pos = 'SS' then 'Infield'
@@ -113,8 +115,20 @@ Case when pos = 'OF' then 'Outfield'
      when pos = 'C' then 'Battery'
      Else null end as Position
 from fielding as f
-group by f.pos
+where f.yearid = '2016'
+group by f.pos;
 
---Find the average number of strikeouts per game by decade since 1920. Round the numbers you report to 2 decimal places. Do the same for home runs per game. Do you see any trends?
+/*Find the average number of strikeouts per game by decade since 1920. 
+Round the numbers you report to 2 decimal places. Do the same for home 
+runs per game. Do you see any trends?*/
+
+select * 
+from pitching
+--answer below
+select Round(avg(so),2) as avgso, p.yearid/10*10 as decade
+from pitching as p
+group by p.yearid/10*10
+Order by decade 
+
 
 
