@@ -128,7 +128,27 @@ from pitching
 select Round(avg(so),2) as avgso, p.yearid/10*10 as decade
 from pitching as p
 group by p.yearid/10*10
-Order by decade 
+Order by decade; 
+
+/* 6. Find the player who had the most success stealing bases in 2016, 
+where success is measured as the percentage of stolen base attempts
+which are successful. (A stolen base attempt results either in a 
+stolen base or being caught stealing.) Consider only players who 
+attempted at least 20 stolen bases.*/
+
+Select * 
+from batting
+
+Select b.playerid, cs as caught_stealing, sb as stolen_bases, namefirst, namelast,
+((sb)/(cs +sb):: NUMERIC)*100 as attempts
+from batting as b
+Left join people as p
+on b.playerid = p.playerid
+where yearid = '2016' and (cs +sb) > 19
+order by attempts desc
+
+--ANSWER: Chris Owings, 91.3%
+
 
 
 
