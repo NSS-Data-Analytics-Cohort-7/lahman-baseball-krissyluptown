@@ -66,13 +66,36 @@ where cp.schoolid = 'vandy'
 --on s.playerid = cp.playerid
 --where cp.schoolid = 'vandy' 
 
-SELECT customer.customer_num,
-	(SELECT SUM(ship_charge) 
-	 	FROM orders
-	 	WHERE customer.customer_num = orders.customer_num) 
-			AS total_ship_chg
-	FROM customer 
 
+With total_salaries as
+    (select distinct playerid, sum(salary) as total_salary
+    from salaries
+    Group by playerid)
+Select distinct p.playerid, p.namefirst, p.namelast, total_salary
+    from people as p
+Left Join collegeplaying as cp
+on cp.playerid = p.playerid
+Left join total_salaries as ts
+on p.playerid = ts.playerid
+where cp.schoolid = 'vandy' and total_salary is not null
+Order by total_salary DESC;
+
+--David Price, $81,851,296
+
+--4.
+Select * 
+from fielding
+
+Select pos, po,
+Case when pos = 'OF' then 'Outfield'
+     when pos = 'SS' then 'Infield'
+     when pos = '1B' then 'Infield'
+     when pos = '2B' then 'Infield'
+     when pos = '3B' then 'Infield'
+     when pos = 'P' then 'Battery'
+     when pos = 'C' then 'Battery'
+     Else null end as Position
+from fielding
 
 
 
