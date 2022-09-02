@@ -149,6 +149,77 @@ order by attempts desc
 
 --ANSWER: Chris Owings, 91.3%
 
+/* 7. From 1970 – 2016, what is the largest number of wins for a team 
+that did not win the world series? What is the smallest number of wins 
+for a team that did win the world series? Doing this will probably result 
+in an unusually small number of wins for a world series champion – 
+determine why this is the case. Then redo your query, excluding the 
+problem year. How often from 1970 – 2016 was it the case that a team with 
+the most wins also won the world series? What percentage of the time?*/
 
+/*Using the attendance figures from the homegames table, find the teams 
+and parks which had the top 5 average attendance per game in 2016 
+(where average attendance is defined as total attendance divided by 
+number of games). Only consider parks where there were at least 10 games 
+played. Report the park name, team name, and average attendance. Repeat 
+for the lowest 5 average attendance.*/
 
+select *
+from homegames;
+
+select distinct park, team, (attendance/games) as avgattendance
+from homegames
+where year = '2016'
+order by avgattendance DESC
+limit 5
+
+select distinct h.park, h.team, h.attendance, h.games, h.year, p.park_name
+from homegames as h
+Left Join parks as p
+on h.park = p.park
+where year = '2016'
+order by attendance DESC
+limit 5
+
+--select team, games, year
+--from homegames 
+--order by year desc
+
+select distinct h.park, h.team, (h.attendance/h.games) as avgattendance,
+h.year, p.park_name
+from homegames as h
+Left join parks as p
+on h.park = p.park
+where year = '2016'
+order by avgattendance DESC
+limit 5
+/* 1. Dodger Stadium, 45719, Los Angeles Dodgers
+   2. Busch Stadium III, 42524, St. Louis Cardinals
+   3. Rogers Center, 41877, Toronto Blue Jays
+   4. AT&T Park, 41546, SanFransisco Giants
+   5. Wrigley Field, 39906, Chicago Cubs*/
+
+select distinct h.park, h.team, (h.attendance/h.games) as avgattendance,
+h.year, p.park_name
+from homegames as h
+Left join parks as p
+on h.park = p.park
+where year = '2016'
+order by avgattendance 
+limit 5
+/* 1. Fort Bragg Field, 12582, Altanta Braves
+   2. Tropicana Field, 15878, Tampa Bay Rays
+   3. Oakland-Alameda County Coliseum, 18784, Oakland Athletics
+   4. Progressive Field, 19650, Cleveland Indians
+   5. Marlins Park, 21405, Miami Marlins */
+   
+/* 9. Which managers have won the TSN Manager of the Year award in both 
+the National League (NL) and the American League (AL)? Give their full 
+name and the teams that they were managing when they won the award.*/
+
+Select * 
+from managers
+
+Select *
+from awardsmanagers
 
