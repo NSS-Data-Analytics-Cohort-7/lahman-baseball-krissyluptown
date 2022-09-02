@@ -222,4 +222,49 @@ from managers
 
 Select *
 from awardsmanagers
+--names of the managers who won in both leagues 
+Select a.playerid, a.awardid, a.lgid, p.namelast, p.namefirst,
+m.teamid
+from awardsmanagers as a
+Join people as p
+on a.playerid = p.playerid
+Join managershalf as m
+on p.playerid = m.playerid
+where (a.lgid = 'NL' or a.lgid = 'AL') 
+and awardid = 'TSN Manager of the Year' 
+--two CTEs with wins in each league. 
+With NLwin as
+    (Select distinct a.playerid, a.awardid, a.lgid, p.namelast, p.namefirst,
+    m.teamid
+    from awardsmanagers as a
+    Join people as p
+    on a.playerid = p.playerid
+    Join managershalf as m
+    on p.playerid = m.playerid
+    where (a.lgid = 'NL')
+    and awardid = 'TSN Manager of the Year'),
+ALwin as 
+    (Select a.playerid, a.awardid, a.lgid, p.namelast, p.namefirst,
+    m.teamid
+    from awardsmanagers as a
+    Join people as p
+    on a.playerid = p.playerid
+    Join managershalf as m
+    on p.playerid = m.playerid
+    where (a.lgid = 'AL')
+    and awardid = 'TSN Manager of the Year')
+Select n.playerid, n.namelast, n.namefirst, a.playerid
+from NLwin as n
+Join ALwin as a
+on n.playerid = a.playerid
 
+
+
+With ALwins as
+    (Select a.awardid, a.lgid, p.namefirst, p.namelast
+    From awardsmanagers as a
+    Join people as p
+     on a.playerid = p.playerid
+    where (lgid = 'AL') and a.awardid = 'TSN MANAGER of the Year')
+
+--case when playerid award id = both leagues??
